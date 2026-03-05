@@ -5,6 +5,10 @@ import { useData } from './providers';
 export function Pagination() {
   const [pages, setPages] = useState([]);
   const { apiURL, info, activePage, setActivePage, setApiURL } = useData();
+  const prevIndex = activePage - 1;
+  const nextIndex = activePage + 1;
+  const hasPrev = prevIndex >= 0;
+  const hasNext = nextIndex < pages.length;
 
   const handlePageChange = useCallback(
     (index) => {
@@ -54,26 +58,26 @@ export function Pagination() {
 
   return (
     <StyledPagination>
-      {pages[activePage - 1] && (
+      {hasPrev && (
         <>
-          {activePage - 1 !== 0 && (
+          {prevIndex !== 0 && (
             <>
               <Page onClick={onFirstClick}>« First</Page>
               <Ellipsis>...</Ellipsis>
             </>
           )}
 
-          <Page onClick={onPrevClick}>{activePage}</Page>
+          <Page onClick={onPrevClick}>{prevIndex + 1}</Page>
         </>
       )}
 
       <Page active>{activePage + 1}</Page>
 
-      {pages[activePage + 1] && (
+      {hasNext && (
         <>
-          <Page onClick={onNextClick}>{activePage + 2}</Page>
+          <Page onClick={onNextClick}>{nextIndex + 1}</Page>
 
-          {activePage + 1 !== pages.length - 1 && (
+          {nextIndex !== pages.length - 1 && (
             <>
               <Ellipsis>...</Ellipsis>
               <Page onClick={onLastClick}>Last »</Page>
